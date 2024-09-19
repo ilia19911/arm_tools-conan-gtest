@@ -27,7 +27,7 @@ class ArmGccConan(ConanFile):
     def requirements(self):
         print("REQUIRES")
         # Указываем зависимости от тулчейнов
-        self.requires("arm-gcc/[]")
+        self.requires("gcc/13")
 
     def validate(self):
         print("CMSIS_VALIDATION")
@@ -81,8 +81,8 @@ class ArmGccConan(ConanFile):
         self.info.settings_target = self.settings_target
         self.info.settings_target.rm_safe("compiler")
         self.info.settings_target.rm_safe("build_type")
-            # self.info.settings_target.os = self.info.settings.os
-            # self.info.settings_target.arch = self.info.settings.arch
+        # self.info.settings_target.os = self.info.settings.os
+        # self.info.settings_target.arch = self.info.settings.arch
         # self.info.settings.rm_safe("os")
         self.info.settings.rm_safe("compiler.cppstd")
         # self.info.settings.rm_safe("os")
@@ -93,7 +93,7 @@ class ArmGccConan(ConanFile):
 
 #conan list gtest/*:*
 
-#conan create . --version=v1.15.x -pr:h=./profiles/linux_x86_64 -pr:b=./profiles/linux_x86_64 -r=BREO --build-require
+#conan create . --version=v1.15.2 -pr:h=./profiles/darwin -pr:b=./profiles/darwin -r=arm-tools --build-require
 
 #conan upload gtest/v1.15.x -r=BREO
 
