@@ -95,5 +95,5 @@ class ArmGccConan(ConanFile):
 
 #conan create . --version=v1.15.2 -pr:h=./profiles/darwin -pr:b=./profiles/darwin -r=arm-tools --build-require
 
-#conan upload gtest/v1.15.x -r=BREO
+#conan upload gtest/v1.15.x -r=arm-tools
 
