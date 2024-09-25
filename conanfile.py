@@ -12,7 +12,7 @@ class ArmGccConan(ConanFile):
     homepage = ""
     author = "Ostanin <iahve1991@gmail.com>"
     description = "gtests"
-    topics = ("conan", "cmsis", "arm")
+    topics = ("conan", "gtest", "arm")
     settings = "os", "arch", "compiler", "build_type"
     package_type = "application"
     exports_sources = "CMakeLists.txt"
@@ -22,7 +22,7 @@ class ArmGccConan(ConanFile):
     # generators = "CMakeDeps"
 
     def system_requirements(self):
-        print("CMSIS_PYTHON_REQUIREMENTS")
+        print("GTEST_PYTHON_REQUIREMENTS")
 
     def requirements(self):
         print("REQUIRES")
@@ -30,19 +30,20 @@ class ArmGccConan(ConanFile):
         self.requires("gcc/13")
 
     def validate(self):
-        print("CMSIS_VALIDATION")
+        print("GTEST_VALIDATION")
 
     def package_id(self):
-        print("CMSIS_PACKAGE_ID")
+        print("GTEST_PACKAGE_ID")
 
     def source(self):
-        print("CMSIS_SOURCE")
+        print("GTEST_SOURCE")
+        tag = self.version
         git = Git(self)
         if not os.path.exists("./gtest"):
             git.clone(self.url, "./gtest")
             print("project cloned. It contains..")
             self.run(f"ls -la ./gtest")
-            self.run(f"cd ./gtest && git checkout v1.15.2")
+            self.run(f"cd ./gtest && git checkout {tag}")
 
 
     def generate(self):
@@ -55,7 +56,7 @@ class ArmGccConan(ConanFile):
 
 
     def build(self):
-        print("CMSIS_BUILD")
+        print("GTEST_BUILD")
         cmake = CMake(self)
 
         cmake.configure( cli_args=[f"-B {self.package_folder}/build"])
@@ -63,17 +64,19 @@ class ArmGccConan(ConanFile):
         self.run(f"cmake --install {self.package_folder}/build/  --prefix {self.package_folder}")
 
     def package(self):
-        print("CMSIS_PACKAGE")
+        print("GTEST_PACKAGE")
 
         # self.run(f"ls -la .")
         copy(self, "source_url.txt", dst=self.package_folder, src=self.source_folder)
         copy(self, "*.cmake", dst=self.package_folder + "/cmake", src=self.source_folder)
-        copy(self, "cmsis/*", dst=self.package_folder, src=self.source_folder)
+        copy(self, "gtest/*", dst=self.package_folder, src=self.source_folder)
 
     def package_info(self):
-        print("CMSIS_PACKAGE_INFO")
+        print("gtest_PACKAGE_INFO")
         # for cpu in self.arm_cpus:
-        self.cpp_info.builddirs.append(os.path.join(self.package_folder, "/lib/cmake/GTest"))
+        gtest_path = os.path.join(self.package_folder, "lib/cmake/GTest")
+        print(f"gtest lib path is {gtest_path}")
+        self.cpp_info.builddirs.append(gtest_path)
 
     def package_id(self):
         print("GCC_PACKAGE_ID")
